@@ -39,16 +39,64 @@ class ProductViewController: UIViewController {
         navigationItem.rightBarButtonItems = [navigationItem.rightBarButtonItem!, searchButton]
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Load products from Core Data
+        products = ProductManager.shared.fetchProducts()
+        
+        // Add dummy products if empty
+        if products.isEmpty {
+            ProductManager.shared.preloadDataIfNeeded()
+            products = ProductManager.shared.fetchProducts()
+        }
+        
+        // Display first product
+        if !products.isEmpty {
+            displayProduct(at: currentIndex)
+        }
+    }
+    
+    // Display product at specific index
+    func displayProduct(at index: Int) {
+       guard index >= 0 && index < products.count else { return }
+       
+       let product = products[index]
+       productIDLabel.text = product.productID
+       productNameLabel.text = product.name
+       productDescLabel.text = product.desc
+       productPriceLabel.text = String(format: "$%.2f", product.price)
+       productProviderLabel.text = product.provider
+       
+       // Update nav buttons
+       previousButton.isEnabled = index > 0
+       nextButton.isEnabled = index < products.count - 1
+    }
+    
     // MARK: - Actions
-        @objc func viewAllTapped() {
-            performSegue(withIdentifier: "showProductsList", sender: nil)
+    @objc func viewAllTapped() {
+        performSegue(withIdentifier: "showProductsList", sender: nil)
+    }
+    
+    @objc func searchTapped() {
+        performSegue(withIdentifier: "showSearch", sender: nil)
+    }
+    
+    @objc func addProductTapped() {
+        performSegue(withIdentifier: "showAddProduct", sender: nil)
+    }
+    
+    @IBAction func previousButtonTapped(_ sender: Any) {
+        if currentIndex > 0 {
+            currentIndex -= 1
+            displayProduct(at: currentIndex)
         }
+    }
         
-        @objc func searchTapped() {
-            performSegue(withIdentifier: "showSearch", sender: nil)
+    @IBAction func nextButtonTapped(_ sender: Any) {
+        if currentIndex < products.count - 1 {
+            currentIndex += 1
+            displayProduct(at: currentIndex)
         }
-        
-        @objc func addProductTapped() {
-            performSegue(withIdentifier: "showAddProduct", sender: nil)
-        }
+    }
 }
