@@ -56,6 +56,24 @@ class ProductManager {
         }
     }
     
+    // Pre-populate db with sample products
+    func preloadDataIfNeeded() {
+        let count = fetchProducts().count
+        
+        if count == 0 {
+            addProduct(id: "PID001", name: "iPhone 16", desc: "Latest iPhone model", price: 1299.99, provider: "Apple")
+            addProduct(id: "PID002", name: "MacBook Air M4", desc: "Latest MacBook Air with M4 chip", price: 1699.99, provider: "Apple")
+            addProduct(id: "PID003", name: "AirPods Pro", desc: "Wireless earbuds with noise cancellation", price: 249.99, provider: "Apple")
+            addProduct(id: "PID004", name: "iPad Air", desc: "Thin and light tablet with M1 chip", price: 599.99, provider: "Apple")
+            addProduct(id: "PID005", name: "Samsung Galaxy S23", desc: "Latest Android flagship phone", price: 899.99, provider: "Samsung")
+            addProduct(id: "PID006", name: "PS5", desc: "Latest Playstation console", price: 1299.99, provider: "Sony")
+            addProduct(id: "PID007", name: "LG Smart TV", desc: "Premium 4K smart TV", price: 3499.99, provider: "LG")
+            addProduct(id: "PID008", name: "Nintendo Switch", desc: "Hybrid gaming console", price: 299.99, provider: "Nintendo")
+            addProduct(id: "PID009", name: "Logitech MX Master 3", desc: "Premium wireless mouse", price: 99.99, provider: "Logitech")
+            addProduct(id: "PID010", name: "Amazon Echo", desc: "Smart speaker with Alexa", price: 49.99, provider: "Amazon")
+        }
+    }
+    
     // Save context
     func saveContext() {
         do {
