@@ -59,7 +59,7 @@ class ProductManager {
     // Pre-populate db with sample products
     func preloadDataIfNeeded() {
         let count = fetchProducts().count
-        
+        // if no products, add dummy data
         if count == 0 {
             addProduct(id: "PID001", name: "iPhone 16", desc: "Latest iPhone model", price: 1299.99, provider: "Apple")
             addProduct(id: "PID002", name: "MacBook Air M4", desc: "Latest MacBook Air with M4 chip", price: 1699.99, provider: "Apple")

@@ -32,6 +32,7 @@ class AddProductViewController: UIViewController {
             return
         }
             
+        // Add product if the provided info was valid
         ProductManager.shared.addProduct(id: id, name: name, desc: desc, price: price, provider: provider)
         
         navigationController?.popViewController(animated: true)

@@ -105,13 +105,15 @@ class ProductViewController: UIViewController {
         performSegue(withIdentifier: "showAddProduct", sender: nil)
     }
     
+    // If prev button tapped, go back 1 product
     @IBAction func previousButtonTapped(_ sender: Any) {
         if currentIndex > 0 {
             currentIndex -= 1
             displayProduct(at: currentIndex)
         }
     }
-        
+    
+    // If next button pressed, go to next product 
     @IBAction func nextButtonTapped(_ sender: Any) {
         if currentIndex < products.count - 1 {
             currentIndex += 1
