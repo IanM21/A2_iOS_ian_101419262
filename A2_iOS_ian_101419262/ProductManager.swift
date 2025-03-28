@@ -38,6 +38,24 @@ class ProductManager {
         saveContext()
     }
     
+    // Search products by name or description
+    func searchProducts(query: String) -> [Product] {
+        let request: NSFetchRequest<Product> = Product.fetchRequest()
+        
+        if !query.isEmpty {
+            let namePredicate = NSPredicate(format: "name CONTAINS[cd] %@", query)
+            let descPredicate = NSPredicate(format: "desc CONTAINS[cd] %@", query)
+            request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [namePredicate, descPredicate])
+        }
+        
+        do {
+            return try context.fetch(request)
+        } catch {
+            print("Error searching products: \(error)")
+            return []
+        }
+    }
+    
     // Save context
     func saveContext() {
         do {
