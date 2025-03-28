@@ -57,25 +57,44 @@ class ProductViewController: UIViewController {
         }
     }
     
-    // Display product at specific index
     func displayProduct(at index: Int) {
-       guard index >= 0 && index < products.count else { return }
-       
-       let product = products[index]
-       productIDLabel.text = product.productID
-       productNameLabel.text = product.name
-       productDescLabel.text = product.desc
-       productPriceLabel.text = String(format: "$%.2f", product.price)
-       productProviderLabel.text = product.provider
-       
-       // Update nav buttons
-       previousButton.isEnabled = index > 0
-       nextButton.isEnabled = index < products.count - 1
+        guard index >= 0 && index < products.count else { return }
+        
+        let product = products[index]
+        
+        // Debug print to see what values we're working with
+        print("Product at index \(index): ID=\(product.productID ?? "nil"), name=\(product.name ?? "nil"), desc=\(product.desc ?? "nil"), price=\(product.price), provider=\(product.provider ?? "nil")")
+        
+        // Check all outlets are connected
+        guard productIDLabel != nil && productNameLabel != nil && productDescLabel != nil &&
+              productPriceLabel != nil && productProviderLabel != nil else {
+            print("ERROR: One or more label outlets are nil!")
+            return
+        }
+        
+        // Safely unwrap all optional values
+        productIDLabel.text = product.productID ?? "No ID"
+        productNameLabel.text = product.name ?? "No Name"
+        productDescLabel.text = product.desc ?? "No Description"
+        
+        // Format price with extra safety
+        if let priceLabel = productPriceLabel {
+            priceLabel.text = String(format: "$%.2f", product.price)
+        }
+        
+        productProviderLabel.text = product.provider ?? "No Provider"
+        
+        // Update nav buttons if they exist
+        previousButton?.isEnabled = index > 0
+        nextButton?.isEnabled = index < products.count - 1
     }
     
     // MARK: - Actions
     @objc func viewAllTapped() {
-        performSegue(withIdentifier: "showProductsList", sender: nil)
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let productsListVC = storyboard.instantiateViewController(withIdentifier: "ProductsListViewController") as? ProductsListViewController {
+            navigationController?.pushViewController(productsListVC, animated: true)
+        }
     }
     
     @objc func searchTapped() {

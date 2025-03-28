@@ -12,6 +12,20 @@ class ProductsListViewController: UITableViewController {
     
     var products: [Product] = []
     
+    func loadProducts() {
+        products = ProductManager.shared.fetchProducts()
+        
+        // If no products exist, preload sample data
+        if products.isEmpty {
+            print("No products found, preloading data...")
+            ProductManager.shared.preloadDataIfNeeded()
+            products = ProductManager.shared.fetchProducts()
+        }
+        
+        print("Loaded \(products.count) products")
+        tableView.reloadData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "All Products"
@@ -21,11 +35,7 @@ class ProductsListViewController: UITableViewController {
         super.viewWillAppear(animated)
         loadProducts()
     }
-    
-    func loadProducts() {
-        products = ProductManager.shared.fetchProducts()
-        tableView.reloadData()
-    }
+
     
     // MARK: - Table view data source
     
